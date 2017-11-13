@@ -19,12 +19,13 @@ trait Helper
         \Resque::setBackend('redis://user:'.C('REDIS.password').'@'.C('REDIS.host').':'.C('REDIS.port').'/'.C('REDIS.database'));
     }
     
-    public function addJob($actionId,$url)
+    public function addJob($actionId,$args)
     {
         $args = array(
             'time' => time(),
-            'url' => $url,
-            'action_id' => $actionId
+            'url' => $args['url'],
+            'action_id' => $actionId,
+            'args' => $args,
         );
 
         if ($actionId){

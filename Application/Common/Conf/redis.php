@@ -12,7 +12,7 @@ if (get_cfg_var('PROJECT_RUN_MODE') == 'PRODUCTION'){
 }else{
     return [
         'REDIS' => [
-            'host' => '192.168.10.10',
+            'host' => '127.0.0.1',
             'port' => '6379',
             'password' => '',
             'database' => '0',

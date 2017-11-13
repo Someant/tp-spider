@@ -53,4 +53,35 @@ class CronJobController extends Controller
         }
     }
 
+    public function test()
+    {
+        $category_list = D('BaseCategory')->select();
+        $disable_ids = [1,2,];
+        //S('test','123');
+        foreach ($category_list as $item){
+            if (!in_array($item['category_id'],$disable_ids)){
+                continue;
+            }
+
+            $exist_data = S('empty_data:'.$item['category_id']);
+            $page = 1;
+            while (empty($exist_data)){
+                $this->addJob(1,['page' => $page,'category_name' => $item['name'],'category_id' => $item['category_id']]);
+                echo 'page:'.$page.' category_id:'.$item['category_id'].PHP_EOL;
+                addMyLog('page:'.$page.' category_id:'.$item['category_id'],'test_page');
+                sleep(2);
+                $page++;
+                $exist_data = S('empty_data:'.$item['category_id']);
+            }
+
+        }
+//        for ($i = 0; $i < 300; $i++){
+//            $this->addJob(1,['page' => $i,'category_name' => $category_name]);
+//            echo 'page:'.$i.' category_id:'.$category_id.PHP_EOL;
+//            sleep(3);
+//            addMyLog('page:'.$i.' category_id:'.$category_id,'test_page');
+//        }
+
+    }
+
 }
