@@ -39,7 +39,7 @@ class Request
             'scheme' => 'tcp',
             'host'   => $config['host'],
             'port'   => $config['port'],
-            'password' => $config['password'],
+            //'password' => $config['password'],
         ]);
     }
 
@@ -71,7 +71,7 @@ class Request
                 $url = str_replace('{' . $key . '}', $param, $url);
             }
         }
-        
+        addMyLog('url:'.$url,'request');
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->header[rand(0, 2)]);  //设置头信息的地方
         curl_setopt($this->curl, CURLOPT_HEADER, 0);

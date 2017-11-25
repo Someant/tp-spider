@@ -41,5 +41,14 @@ class DouBanScheduler extends Scheduler implements SchedulerInterface{
 
     }
 
+    public function shortComment()
+    {
+        $args = $this->getJobArgs()['args'];
+        $outside_id = isset($_GET['outside_id']) ? $_GET['outside_id'] : $args['outside_id'];
+        $this->setParam(['outside_id' => $outside_id]);
+        $data = (new DouBanSpider())->getShortComment($outside_id);
+        self::getModelInstance('DouBan/ShortComment')->updateData($data);
+    }
+
 
 }

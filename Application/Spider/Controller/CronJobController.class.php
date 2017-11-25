@@ -1,6 +1,8 @@
 <?php
 namespace Spider\Controller;
 
+use Spider\Model\DouBan\MapModel;
+use Spider\Model\DouBan\ShortCommentModel;
 use Spider\Queues\Helper;
 use Spider\Scheduler\Router;
 use Think\Controller;
@@ -82,6 +84,19 @@ class CronJobController extends Controller
 //            addMyLog('page:'.$i.' category_id:'.$category_id,'test_page');
 //        }
 
+    }
+
+    public function ID3()
+    {
+        $where['category_id'] = ['in','2'];
+        $map = (new MapModel())->field('outside_id,category_id')->where($where)->select();
+
+        foreach ($map as $item){
+            $this->addJob(3,['outside_id' => $item['outside_id']]);
+            echo 'outside_id:'.$item['outside_id'].' category_id:'.$item['category_id'].PHP_EOL;
+            addMyLog('outside_id:'.$item['outside_id'].' category_id:'.$item['category_id'],'ID3');
+            sleep(2);
+        }
     }
 
 }

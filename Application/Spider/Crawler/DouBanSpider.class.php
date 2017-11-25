@@ -27,4 +27,26 @@ class DouBanSpider extends Request
         return $list;
     }
 
+    public function getShortComment($outside_id)
+    {
+        $url = 'https://movie.douban.com/subject/{outside_id}/comments?start=0&limit=20&sort=new_score&status=P&percent_type=';
+        $response = $this->getRequest($url);
+        \phpQuery::newDocument($response);
+
+        foreach (pq('#comments .comment-item') as $item){
+            $p_url = pq($item)->find('.avatar a')->attr('href');
+            $rate = pq($item)->find('.comment-info .rating')->attr('class');
+            $data[] = [
+                'outside_id' => $outside_id,
+                'pid' => explode('/',$p_url)[4],
+                'content' => trim(pq($item)->find('.comment>p')->text()),
+                'votes' => intval(pq($item)->find('.comment-vote .votes')->text()),
+                'rate' => mb_substr($rate,7,2),
+                'public_date' => pq($item)->find('.comment-info .comment-time ')->attr('title'),
+            ];
+        }
+
+        return $data;
+    }
+
 }
